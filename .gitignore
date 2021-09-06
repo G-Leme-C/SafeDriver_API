@@ -352,3 +352,6 @@ MigrationBackup/
 
 # Appsettings
 appsettings.*
+
+#global.json
+global.json

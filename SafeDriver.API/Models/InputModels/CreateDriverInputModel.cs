@@ -7,7 +7,6 @@ namespace SafeDriver.API.Models.InputModels
         public string EmailAddress { get; set; }
         public string Password { get; set; }
 
-
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public string DocumentNumber { get; set; }

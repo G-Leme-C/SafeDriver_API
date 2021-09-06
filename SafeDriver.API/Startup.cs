@@ -12,7 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SafeDriver.Domain.Data;
-
+using AutoMapper;
+using SafeDriver.API.MapProfiles;
 
 namespace SafeDriver.API
 {
@@ -30,6 +31,7 @@ namespace SafeDriver.API
         {
             ConfigureDbContext(services);
             ConfigureSwaggerService(services);
+            ConfigureAutoMapping(services);
             services.AddControllers();
         }
 
@@ -74,6 +76,10 @@ namespace SafeDriver.API
                 .UseNpgsql(Configuration.GetConnectionString("LocalSafeDriverDatabase"))
                 .UseSnakeCaseNamingConvention();
             });
+        }
+
+        public void ConfigureAutoMapping(IServiceCollection services) {
+            services.AddAutoMapper(typeof(DriverProfile));
         }
     }
 }
