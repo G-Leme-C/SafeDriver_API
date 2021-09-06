@@ -28,20 +28,9 @@ namespace SafeDriver.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SafeDriverDbContext>(options => {
-                options
-                .UseNpgsql(Configuration.GetConnectionString("LocalSafeDriverDatabase"))
-                .UseSnakeCaseNamingConvention();
-            });
-            
+            ConfigureDbContext(services);
+            ConfigureSwaggerService(services);
             services.AddControllers();
-
-            services.AddSwaggerGen(config => {
-                config.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() {
-                    Title = "SafeDriver API for SafeDriver App",
-                    Version = "v1"
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +56,23 @@ namespace SafeDriver.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+        }
+    
+        public void ConfigureSwaggerService(IServiceCollection services) {
+            services.AddSwaggerGen(config => {
+                config.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() {
+                    Title = "SafeDriver API for SafeDriver App",
+                    Version = "v1"
+                });
+            });
+        }
+
+        public void ConfigureDbContext(IServiceCollection services) {
+            services.AddDbContext<SafeDriverDbContext>(options => {
+                options
+                .UseNpgsql(Configuration.GetConnectionString("LocalSafeDriverDatabase"))
+                .UseSnakeCaseNamingConvention();
             });
         }
     }
