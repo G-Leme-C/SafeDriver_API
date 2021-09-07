@@ -1,5 +1,8 @@
+using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SafeDriver.API.Models.InputModels;
 using SafeDriver.Domain.Data;
 using SafeDriver.Domain.Entities;
@@ -19,10 +22,20 @@ namespace SafeDriver.API.Controllers
             this._mapper = mapper;
 
         }
-        [HttpGet]
-        public IActionResult GetDriverByUUID(string driverUUID)
+        [HttpGet("{driverUUID}")]
+        public async Task<ActionResult<Driver>> GetDriverByUUID(string driverUUID)
         {
-            return Ok("Teste");
+            if(string.IsNullOrWhiteSpace(driverUUID))
+                return BadRequest();
+            
+            var driver = await _dbContext.Drivers
+                        .AsNoTracking()
+                        .SingleOrDefaultAsync(d => d.DriverUUID == driverUUID);
+
+            if(driver == null)
+                return NotFound();
+
+            return driver;
         }
 
         [HttpPost]
@@ -30,10 +43,13 @@ namespace SafeDriver.API.Controllers
         {
             var driver = _mapper.Map<CreateDriverInputModel, Driver>(driverInputModel);
 
+            Guid driverUUID = Guid.NewGuid();
+            driver.DriverUUID = driverUUID.ToString();
+
             _dbContext.Drivers.Add(driver);
             _dbContext.SaveChanges();
 
-            return Created(nameof(GetDriverByUUID), driver.DriverUUID);
+            return CreatedAtAction(nameof(GetDriverByUUID), new { driverUUID = driver.DriverUUID }, driver);
         }
     }
 

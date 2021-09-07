@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SafeDriver.Domain.Data;
@@ -9,9 +10,10 @@ using SafeDriver.Domain.Data;
 namespace SafeDriver.Domain.Migrations
 {
     [DbContext(typeof(SafeDriverDbContext))]
-    partial class SafeDriverDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210907155628_RenameUserNameToEmailAddress")]
+    partial class RenameUserNameToEmailAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
