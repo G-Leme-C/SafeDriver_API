@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using SafeDriver.Domain.Entities;
 using SafeDriver.Domain.ValueObjects;
@@ -25,6 +26,11 @@ namespace SafeDriver.Domain.Data
             modelBuilder.Entity<Trip>().OwnsOne<Coordinate>(t => t.FinalCoordinates);
             modelBuilder.Entity<User>().ToTable("users");
             modelBuilder.Entity<Driver>().ToTable("drivers");
+        }
+
+        public object AsNoTracking()
+        {
+            throw new NotImplementedException();
         }
     }
 }

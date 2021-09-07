@@ -1,9 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SafeDriver.Domain.Entities {
 
     public class Driver : User {
-        
         public string DriverUUID { get; set; }
 
         public string Name { get; set; }
