@@ -1,12 +1,11 @@
 using System;
 
-namespace SafeDriver.API.Models.InputModels
+namespace SafeDriver.API.Models.OutputModels
 {
-    public class CreateDriverInputModel
+    public class GetDriverInfoOutputModel
     {
         public string EmailAddress { get; set; }
-        public string Password { get; set; }
-
+        public string DriverUUID { get; set; }
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public string DocumentNumber { get; set; }
