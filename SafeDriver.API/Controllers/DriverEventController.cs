@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SafeDriver.API.Models.InputModels;
+using SafeDriver.API.Models.OutputModels;
 using SafeDriver.Domain.Data;
 using SafeDriver.Domain.Entities;
 
@@ -24,7 +25,7 @@ namespace SafeDriver.API.Controllers
         }
 
         [HttpGet("{driverUUID}")]
-        public async Task<ActionResult<List<Event>>> GetAllEventsFromDriver(string driverUUID)
+        public async Task<ActionResult<List<GetDriverEventInfoOutputModel>>> GetAllEventsFromDriver(string driverUUID)
         {
             if(string.IsNullOrWhiteSpace(driverUUID))
                 return BadRequest();
@@ -38,7 +39,27 @@ namespace SafeDriver.API.Controllers
                         .Where(e => e.DriverId == driver.Id)
                         .ToListAsync();
 
-            return events;
+            return _mapper.Map<List<Event>, List<GetDriverEventInfoOutputModel>>(events);
+        }
+
+        [HttpGet("{driverUUID}/{eventId}")]
+        public async Task<ActionResult<GetDriverEventInfoOutputModel>> GetEventById(string driverUUID, int eventId) {
+            if(string.IsNullOrWhiteSpace(driverUUID) || eventId <= 0)
+                return BadRequest();
+
+            var driver = await _dbContext.Drivers
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(d => d.DriverUUID == driverUUID);
+
+            if(driver == null) return NotFound();
+            
+            var eventById = await _dbContext.Events
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(e => e.Id == eventId && e.DriverId == driver.Id);
+
+            if(eventById == null) return NotFound();
+
+            return _mapper.Map<Event, GetDriverEventInfoOutputModel>(eventById);
         }
 
         [HttpPost("{driverUUID}")]
@@ -56,7 +77,10 @@ namespace SafeDriver.API.Controllers
 
             newEvent.DriverId = driver.Id;
 
-            return CreatedAtAction(nameof(GetAllEventsFromDriver), new { driverUUID = driver.DriverUUID });
+            _dbContext.Events.Add(newEvent);
+            await _dbContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetEventById), new { driverUUID = driver.DriverUUID, eventId = newEvent.Id }, newEvent);
         }
     }
 }
