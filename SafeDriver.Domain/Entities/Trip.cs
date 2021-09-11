@@ -11,6 +11,8 @@ namespace SafeDriver.Domain.Entities
         public int DriverId { get; set; }
         public Driver Driver { get; set; }
 
+
+        public DateTime TripStartTimestamp { get; set; }
         public TimeSpan TripDuration { get; set; }
     }
 }
