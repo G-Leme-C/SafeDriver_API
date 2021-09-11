@@ -21,8 +21,8 @@ namespace SafeDriver.API.Controllers
         {
             this._dbContext = dbContext;
             this._mapper = mapper;
-
         }
+
         [HttpGet("{driverUUID}")]
         public async Task<ActionResult<GetDriverInfoOutputModel>> GetDriverByUUID(string driverUUID)
         {
@@ -37,6 +37,42 @@ namespace SafeDriver.API.Controllers
                 return NotFound();
 
             return _mapper.Map<Driver, GetDriverInfoOutputModel>(driver);
+        }
+
+        [HttpGet("{driverUUID}/statistics")]
+        public async Task<ActionResult> GetDriverStatsByUUID(string driverUUID) {
+            return Ok(new {
+                DriverScore = 537,
+                TripsCompleted = 15,
+                Achievements = 10,
+                BonusesAvailable = 4,
+                RegisteredAlerts = 98
+            });
+        }
+
+        [HttpGet("{driverUUID}/bonuses")]
+        public async Task<ActionResult> GetDriverBonusesByUUID(string driverUUID) {
+            return Ok(new[] {
+                new 
+                {
+                    BonusId = 1,
+                    Vendor = "Sem parar",
+                    PromotionText = "35% de desconto"
+                },
+                new 
+                {
+                    BonusId = 2,
+                    Vendor = "Porto Seguro",
+                    PromotionText = "Até 20% de desconto"
+                },
+                new 
+                {
+                    BonusId = 3,
+                    Vendor = "Bradesco Seguros Auto",
+                    PromotionText = "Até 25% de desconto"
+                }
+            }
+            );
         }
 
         [HttpPost]
