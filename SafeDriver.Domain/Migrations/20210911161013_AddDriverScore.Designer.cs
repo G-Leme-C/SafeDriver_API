@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SafeDriver.Domain.Data;
@@ -9,9 +10,10 @@ using SafeDriver.Domain.Data;
 namespace SafeDriver.Domain.Migrations
 {
     [DbContext(typeof(SafeDriverDbContext))]
-    partial class SafeDriverDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210911161013_AddDriverScore")]
+    partial class AddDriverScore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,12 +96,10 @@ namespace SafeDriver.Domain.Migrations
                         .HasColumnName("created_at");
 
                     b.Property<string>("EmailAddress")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("email_address");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password");
 
@@ -113,7 +113,6 @@ namespace SafeDriver.Domain.Migrations
                     b.HasBaseType("SafeDriver.Domain.Entities.User");
 
                     b.Property<string>("AutomotiveInsuranceProvider")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("automotive_insurance_provider");
 
@@ -122,7 +121,6 @@ namespace SafeDriver.Domain.Migrations
                         .HasColumnName("birth_date");
 
                     b.Property<string>("DocumentNumber")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("document_number");
 
@@ -135,7 +133,6 @@ namespace SafeDriver.Domain.Migrations
                         .HasColumnName("driver_uuid");
 
                     b.Property<string>("DriversLicenseNumber")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("drivers_license_number");
 
@@ -144,7 +141,6 @@ namespace SafeDriver.Domain.Migrations
                         .HasColumnName("is_professional_driver");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
