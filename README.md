@@ -13,9 +13,19 @@ This project was created for academic purpose only. As part of a project-based l
 - Automapper
 - NUnit for testing
 - Swagger for docs
+- Docker
 
 -----------------
 ### How to run on development mode (auto-reload)
 ```powershell
 dotnet watch run --project SafeDriver_API/SafeDriver.API.csproj
+```
+
+-----------------
+#### Published on Heroku using Docker
+[Click here to access the API Docs](https://safe-driver-api.herokuapp.com/index.html)
+ 
+For building
+```powershell
+docker build -t safe-driver-api
 ```
