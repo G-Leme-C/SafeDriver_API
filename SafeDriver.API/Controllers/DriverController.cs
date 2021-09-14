@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,19 @@ namespace SafeDriver.API.Controllers
         {
             this._dbContext = dbContext;
             this._mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<GetDriverInfoOutputModel>>> GetDrivers()
+        {
+            var driver = await _dbContext.Drivers
+                        .AsNoTracking()
+                        .ToListAsync();
+
+            if(driver == null)
+                return NotFound();
+
+            return _mapper.Map<List<Driver>, List<GetDriverInfoOutputModel>>(driver);
         }
 
         [HttpGet("{driverUUID}")]
