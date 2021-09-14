@@ -7,6 +7,7 @@ namespace SafeDriver.API.Models.OutputModels
         public string EmailAddress { get; set; }
         public string DriverUUID { get; set; }
         public string Name { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime BirthDate { get; set; }
         public string DocumentNumber { get; set; }
         public string DriversLicenseNumber { get; set; }

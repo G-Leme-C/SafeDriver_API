@@ -8,6 +8,7 @@ namespace SafeDriver.API.Models.InputModels
         public string Password { get; set; }
 
         public string Name { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime BirthDate { get; set; }
         public string DocumentNumber { get; set; }
         public string DriversLicenseNumber { get; set; }
