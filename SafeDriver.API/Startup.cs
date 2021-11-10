@@ -14,6 +14,9 @@ using Microsoft.Extensions.Logging;
 using SafeDriver.Domain.Data;
 using AutoMapper;
 using SafeDriver.API.MapProfiles;
+using SafeDriver.Domain.Validators;
+using SafeDriver.Domain.Entities;
+using FluentValidation;
 
 namespace SafeDriver.API
 {
@@ -36,6 +39,9 @@ namespace SafeDriver.API
             ConfigureDbContext(services);
             ConfigureSwaggerService(services);
             ConfigureAutoMapping(services);
+
+            services.AddScoped<IValidator<Driver>, DriverValidator>();
+
             services.AddControllers();
         }
 
