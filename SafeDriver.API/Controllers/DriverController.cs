@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SafeDriver.API.Models.InputModels;
 using SafeDriver.API.Models.OutputModels;
 using SafeDriver.Domain.Data;
 using SafeDriver.Domain.Entities;
+using SafeDriver.Domain.Validators;
 
 namespace SafeDriver.API.Controllers
 {
@@ -17,10 +19,12 @@ namespace SafeDriver.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly SafeDriverDbContext _dbContext;
+        private readonly IValidator<Driver> _driverValidator;
 
-        public DriverController(IMapper mapper, SafeDriverDbContext dbContext)
+        public DriverController(IMapper mapper, SafeDriverDbContext dbContext, IValidator<Driver> driverValidator)
         {
             this._dbContext = dbContext;
+            this._driverValidator = driverValidator;
             this._mapper = mapper;
         }
 
@@ -96,6 +100,14 @@ namespace SafeDriver.API.Controllers
 
             Guid driverUUID = Guid.NewGuid();
             driver.DriverUUID = driverUUID.ToString();
+
+            var validationResults = _driverValidator.Validate(driver);
+            if(validationResults.IsValid == false) {
+                return BadRequest(new {
+                    field = validationResults.Errors[0].PropertyName,
+                    message = validationResults.Errors[0].ErrorMessage
+                });
+            }
 
             _dbContext.Drivers.Add(driver);
             await _dbContext.SaveChangesAsync();
