@@ -85,7 +85,7 @@ namespace SafeDriver.API
         public void ConfigureDbContext(IServiceCollection services) {
             services.AddDbContext<SafeDriverDbContext>(options => {
                 options
-                .UseNpgsql(Configuration.GetConnectionString("DefaultSafeDriverDatabase"))
+                .UseNpgsql(Configuration.GetConnectionString("HerokuSafeDriverDatabase"))
                 .UseSnakeCaseNamingConvention();
             });
         }
